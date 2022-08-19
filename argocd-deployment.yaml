@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: solr-cluster-deployment
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/zhaoqi/corona-cicd-argo-test.git
+        revision: HEAD
+        files:
+          - path: "solr-clusters/**/config.yaml"
+  template:
+    metadata:
+      name: "{{ name }}"
+    spec:
+      project: "default"
+      source:
+        repoURL: https://github.com/zhaoqi/corona-cicd-argo-test.git
+        targetRevision: HEAD
+        path: "solr-clusters/{{ name }}"
+      destination:
+        server: "https://kubernetes.default.svc"
+        namespace: "ns-team-mkto-corona-argo-test"      
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+          - CreateNamespace=false

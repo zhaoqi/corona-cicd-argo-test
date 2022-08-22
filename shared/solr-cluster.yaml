@@ -1,3 +1,4 @@
+
 ---
 # Source: solr/templates/secrets.yaml
 apiVersion: v1
